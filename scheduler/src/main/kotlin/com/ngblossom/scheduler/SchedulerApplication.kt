@@ -11,3 +11,8 @@ class SchedulerApplication
 fun main(args: Array<String>) {
     runApplication<SchedulerApplication>(*args)
 }
+
+@Bean
+fun webClientBuilder(): WebClient.Builder {
+    return WebClient.builder()
+}
