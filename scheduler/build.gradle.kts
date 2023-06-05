@@ -14,6 +14,10 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("org.postgresql:r2dbc-postgresql")
     testImplementation("io.projectreactor:reactor-test:3.5.6")
+    testImplementation("com.squareup.okhttp3:okhttp:4.11.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    testImplementation("com.h2database:h2:2.1.214")
+    testImplementation("io.r2dbc:r2dbc-h2:1.0.0.RELEASE")
 }
 
 tasks.withType<KotlinCompile> {

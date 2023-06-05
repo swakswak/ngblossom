@@ -1,1 +1,13 @@
-
+spring:
+  r2dbc:
+    url: {my-db-url}
+    username: {db-username}
+    password: {db-password}
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    show-sql: true
+flowerdata:
+  api:
+    base-url: https://flower.at.or.kr/api/returnData.api
+    service-key: {flowerdata-secret-key}
