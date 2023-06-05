@@ -1,11 +1,12 @@
-package com.ngblossom.schedule
+package com.ngblossom.scheduler
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class ScheduleApplication
+class SchedulerApplication
 
 fun main(args: Array<String>) {
-	runApplication<ScheduleApplication>(*args)
+    runApplication<SchedulerApplication>(*args)
 }

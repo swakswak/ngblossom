@@ -33,6 +33,7 @@ subprojects {
         implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
+        implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
         testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
         testImplementation(kotlin("test"))
     }
