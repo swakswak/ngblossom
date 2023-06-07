@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 val kotlinVersion = rootProject.ext.get("kotlinVersion")
 val springBootVersion = rootProject.ext.get("springBootVersion")
 
@@ -21,21 +18,21 @@ dependencies {
     testImplementation("io.r2dbc:r2dbc-h2:1.0.0.RELEASE")
 }
 
-tasks.withType<KotlinCompile> {
+tasks.compileKotlin {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "17"
     }
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<Jar> {
+tasks.jar {
     enabled = false
 }
 
-tasks.withType<BootJar> {
+tasks.bootJar {
     enabled = true
 }

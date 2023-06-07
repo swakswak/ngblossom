@@ -1,5 +1,3 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 val kotlinVersion = rootProject.ext.get("kotlinVersion")
 val springBootVersion = rootProject.ext.get("springBootVersion")
 
@@ -15,10 +13,10 @@ dependencies {
     testImplementation("io.projectreactor:reactor-test:3.5.6")
 }
 
-tasks.withType<Jar> {
+tasks.jar {
     enabled = false
 }
 
-tasks.withType<BootJar> {
+tasks.bootJar {
     enabled = true
 }

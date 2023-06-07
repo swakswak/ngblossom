@@ -1,11 +1,6 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 plugins {
     id("java")
 }
-
-group = "com.ngblossom"
-version = "unspecified"
 
 repositories {
     mavenCentral()
@@ -20,10 +15,10 @@ tasks.test {
     useJUnitPlatform()
 }
 
-tasks.withType<Jar> {
+tasks.jar {
     enabled = true
 }
 
-tasks.withType<BootJar> {
+tasks.bootJar {
     enabled = false
 }
