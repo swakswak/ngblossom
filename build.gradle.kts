@@ -15,6 +15,13 @@ plugins {
 }
 
 allprojects {
+    apply(plugin = "jacoco")
+
+    jacoco {
+        version = "0.8.10"
+        toolVersion = "0.8.10"
+    }
+
     group = "com.ngblossom"
     repositories {
         mavenCentral()
@@ -40,44 +47,30 @@ subprojects {
         testImplementation(kotlin("test"))
     }
 
-    tasks.withType<KotlinCompile> {
+    tasks.compileKotlin {
         kotlinOptions {
             freeCompilerArgs = listOf("-Xjsr305=strict")
             jvmTarget = "17"
         }
     }
 
-    tasks.withType<Test> {
+    tasks.test {
         useJUnitPlatform()
         finalizedBy("jacocoTestReport")
-    }
-
-    tasks.named<JacocoReport>("jacocoTestReport") {
-        dependsOn(tasks.named<Test>("test"))
-        group = "verification"
-        description = "Generate Jacoco coverage reports after running tests."
-
-        val main by sourceSets
-        sourceDirectories.setFrom(files(main.allSource.srcDirs))
-        classDirectories.setFrom(files(main.output))
-        reports {
-            html.required.set(true)
-        }
     }
 }
 
 tasks.register<JacocoReport>("jacocoRootReport") {
-    dependsOn(":scheduler:jacocoTestReport", ":common:jacocoTestReport") // replace with your module names
-
-    val mainSourceSet = files(subprojects.map { "${it.projectDir}/src/main" })
-    val mainClassSet = files(subprojects.flatMap { it.the<SourceSetContainer>()["main"].output })
-
-    sourceDirectories.setFrom(mainSourceSet)
-    classDirectories.setFrom(mainClassSet)
-
+    dependsOn(subprojects.map { it.tasks.named("test") })
+    sourceDirectories.setFrom(subprojects.map {it.sourceSets["main"].allSource})
+    classDirectories.setFrom(subprojects.map {it.sourceSets["main"].output})
     executionData.setFrom(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
 
     reports {
         html.required.set(true)
     }
+}
+
+tasks.test {
+    finalizedBy("jacocoRootReport")
 }
