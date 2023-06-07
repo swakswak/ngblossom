@@ -1,4 +1,4 @@
-package com.ngblossom.domain.flowerprice
+package com.ngblossom.common.domain.flowerprice
 
 enum class FlowerType(val value: Int, val displayName: String) {
     FLORAL_BRANCH(1, "절화"),

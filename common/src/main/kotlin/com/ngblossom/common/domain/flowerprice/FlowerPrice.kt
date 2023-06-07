@@ -1,4 +1,4 @@
-package com.ngblossom.domain.flowerprice
+package com.ngblossom.common.domain.flowerprice
 
 import java.time.LocalDate
 

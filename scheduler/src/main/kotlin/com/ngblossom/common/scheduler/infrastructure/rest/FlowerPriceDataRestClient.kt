@@ -1,13 +1,17 @@
-package com.ngblossom.scheduler.infrastructure.rest
+package com.ngblossom.common.scheduler.infrastructure.rest
 
-import com.ngblossom.domain.flowerprice.FlowerPrice
-import com.ngblossom.domain.flowerprice.FlowerType
-import com.ngblossom.extensions.toApiDateFormat
-import com.ngblossom.scheduler.service.FlowerPriceDataClient
+import com.ngblossom.common.domain.flowerprice.FlowerPrice
+import com.ngblossom.common.domain.flowerprice.FlowerType
+import com.ngblossom.common.exceptions.DependencyServerErrorException
+import com.ngblossom.common.extensions.toApiDateFormat
+import com.ngblossom.common.scheduler.service.FlowerPriceDataClient
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.awaitBody
+import org.springframework.web.reactive.function.client.*
+import reactor.core.publisher.Mono
+import reactor.util.retry.Retry
+import java.time.Duration
 import java.time.LocalDate
 
 @Component
@@ -29,8 +33,14 @@ class FlowerPriceDataRestClient(
                     .queryParam("countPerPage", "100000")
                     .build()
             }
-            .retrieve()
-            .awaitBody<FlowerPriceRestResponseBody>()
+            .exchangeToMono<FlowerPriceRestResponseBody> {
+                when(it.statusCode().isError) {
+                    true -> Mono.error(DependencyServerErrorException(baseUrl, it.statusCode().value()))
+                    false -> it.bodyToMono(FlowerPriceRestResponseBody::class.java)
+                }
+            }
+            .retryWhen(Retry.backoff(3, Duration.ofSeconds(1)))
+            .awaitSingle()
             .toFlowerPrices()
     }
 }

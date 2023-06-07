@@ -1,9 +1,9 @@
-package com.ngblossom.scheduler.infrastructure.rest
+package com.ngblossom.common.scheduler.infrastructure.rest
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.ngblossom.domain.flowerprice.FlowerPrice
-import com.ngblossom.domain.flowerprice.FlowerType
-import com.ngblossom.extensions.dateFormat
+import com.ngblossom.common.domain.flowerprice.FlowerPrice
+import com.ngblossom.common.domain.flowerprice.FlowerType
+import com.ngblossom.common.extensions.dateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

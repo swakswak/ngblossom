@@ -1,4 +1,4 @@
-package com.ngblossom.scheduler
+package com.ngblossom.common.scheduler
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

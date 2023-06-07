@@ -1,4 +1,4 @@
-package com.ngblossom.core
+package com.ngblossom.common.core
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

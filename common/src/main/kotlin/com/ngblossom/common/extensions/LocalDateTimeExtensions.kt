@@ -1,4 +1,4 @@
-package com.ngblossom.extensions
+package com.ngblossom.common.extensions
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
