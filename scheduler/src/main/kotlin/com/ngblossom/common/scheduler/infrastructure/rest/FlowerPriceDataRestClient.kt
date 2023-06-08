@@ -24,8 +24,8 @@ class FlowerPriceDataRestClient(
 
     override suspend fun getFlowerData(baseDate: LocalDate, flowerType: FlowerType): List<FlowerPrice> {
         return webClient.get()
-            .uri {
-                it.queryParam("kind", "f001")
+            .uri { uriBuilder ->
+                uriBuilder.queryParam("kind", "f001")
                     .queryParam("baseDate", baseDate.toApiDateFormat())
                     .queryParam("flowerGubn", flowerType)
                     .queryParam("serviceKey", serviceKey)
@@ -33,10 +33,10 @@ class FlowerPriceDataRestClient(
                     .queryParam("countPerPage", "100000")
                     .build()
             }
-            .exchangeToMono<FlowerPriceRestResponseBody> {
-                when(it.statusCode().isError) {
-                    true -> Mono.error(DependencyServerErrorException(baseUrl, it.statusCode().value()))
-                    false -> it.bodyToMono(FlowerPriceRestResponseBody::class.java)
+            .exchangeToMono {res ->
+                when (res.statusCode().is5xxServerError) {
+                    true -> Mono.error(DependencyServerErrorException(baseUrl, res.statusCode().value()))
+                    false -> res.bodyToMono(FlowerPriceRestResponseBody::class.java)
                 }
             }
             .retryWhen(Retry.backoff(3, Duration.ofSeconds(1)))
