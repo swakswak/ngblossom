@@ -1,6 +1,7 @@
-package com.ngblossom.common.scheduler.infrastructure.rest
+package com.ngblossom.scheduler.infrastructure.rest
 
 import com.ngblossom.common.domain.flowerprice.FlowerType
+import com.ngblossom.scheduler.service.rest.FlowerPriceRestApiFetcher
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -8,11 +9,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.LocalDate
 
@@ -22,13 +20,13 @@ class FlowerDataRestClientTest {
 
     private val mockWebServer = MockWebServer()
 
-    private lateinit var flowerPriceDataRestClient: FlowerPriceDataRestClient
+    private lateinit var flowerPriceDataRestClient: FlowerPriceRestApiFetcher
 
     @BeforeEach
     fun setup() {
         mockWebServer.start(port.toInt())
         val baseUrl = mockWebServer.url("/").toString()
-        flowerPriceDataRestClient = FlowerPriceDataRestClient(baseUrl, "my-service-key", WebClient.builder())
+        flowerPriceDataRestClient = FlowerPriceRestApiFetcher(baseUrl, "my-service-key", WebClient.builder())
     }
 
     @AfterEach
@@ -80,7 +78,7 @@ class FlowerDataRestClientTest {
         )
 
         // Act
-        val result = flowerPriceDataRestClient.getFlowerData(baseDate, flowerType)
+        val result = flowerPriceDataRestClient.fetchFlowerData(baseDate, flowerType)
 
         // Assert
         assertEquals("2018-08-16", result[0].saleDate.toString())

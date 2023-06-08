@@ -1,7 +1,6 @@
 val kotlinVersion = rootProject.ext.get("kotlinVersion")
 val springBootVersion = rootProject.ext.get("springBootVersion")
 
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc:$springBootVersion")
     implementation("org.springframework.boot:spring-boot-starter-quartz:$springBootVersion")

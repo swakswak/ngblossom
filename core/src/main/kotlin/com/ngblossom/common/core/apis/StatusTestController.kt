@@ -15,18 +15,15 @@ import java.time.Duration.*
 class StatusTestController(
     private val webClient: WebClient = WebClient.builder().baseUrl("https://httpstat.us").build()
 ) {
-
-        @RequestMapping("/{statusCode}")
-        suspend fun test(@PathVariable statusCode: Int): String {
-            return webClient.get()
-                .uri("/$statusCode")
-                .exchangeToMono {
-                    when(it.statusCode().is5xxServerError) {
-                        true -> Mono.error(DependencyServerErrorException("https://httpstat.us", it.statusCode().value()))
-                        false -> it.bodyToMono(String::class.java)
-                    }
-                }
-                .retryWhen(Retry.backoff(3, ofMillis(300)))
-                .awaitSingle()
+    @RequestMapping("/{statusCode}")
+    suspend fun test(@PathVariable statusCode: Int): String = webClient.get()
+        .uri("/$statusCode")
+        .exchangeToMono {
+            when (it.statusCode().is5xxServerError) {
+                true -> Mono.error(DependencyServerErrorException("https://httpstat.us", it.statusCode().value()))
+                false -> it.bodyToMono(String::class.java)
+            }
         }
+        .retryWhen(Retry.backoff(3, ofMillis(300)))
+        .awaitSingle()
 }

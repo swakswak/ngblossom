@@ -1,10 +1,10 @@
-package com.ngblossom.common.scheduler.infrastructure.rest
+package com.ngblossom.scheduler.service.rest
 
 import com.ngblossom.common.domain.flowerprice.FlowerPrice
 import com.ngblossom.common.domain.flowerprice.FlowerType
 import com.ngblossom.common.exceptions.DependencyServerErrorException
 import com.ngblossom.common.extensions.toApiDateFormat
-import com.ngblossom.common.scheduler.service.FlowerPriceDataClient
+import com.ngblossom.scheduler.service.FlowerPriceApiFetcher
 import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -15,14 +15,14 @@ import java.time.Duration
 import java.time.LocalDate
 
 @Component
-class FlowerPriceDataRestClient(
+internal class FlowerPriceRestApiFetcher(
     @Value("\${flowerdata.api.base-url}") private val baseUrl: String,
     @Value("\${flowerdata.api.service-key}") private val serviceKey: String,
     webClientBuilder: WebClient.Builder,
-) : FlowerPriceDataClient {
+) : FlowerPriceApiFetcher {
     private val webClient = webClientBuilder.baseUrl(baseUrl).build()
 
-    override suspend fun getFlowerData(baseDate: LocalDate, flowerType: FlowerType): List<FlowerPrice> {
+    override suspend fun fetchFlowerData(baseDate: LocalDate, flowerType: FlowerType): List<FlowerPrice> {
         return webClient.get()
             .uri { uriBuilder ->
                 uriBuilder.queryParam("kind", "f001")
