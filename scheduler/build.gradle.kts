@@ -29,9 +29,9 @@ tasks.test {
 }
 
 tasks.jar {
-    enabled = false
+    enabled = true
 }
 
 tasks.bootJar {
-    enabled = true
+    enabled = false
 }

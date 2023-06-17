@@ -13,6 +13,7 @@ spring:
     show-sql: true
 
 flowerdata:
+  cron: "0 0,30 * * * *" # 매시 0분, 30분 마다 실행
   api:
     base-url: http://localhost:8888
     service-key: my-service-key

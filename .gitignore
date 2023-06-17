@@ -40,3 +40,4 @@ bin/
 
 /.idea/
 **/application*.yml
+/scheduler/src/main/resources/scheduler-local.yml

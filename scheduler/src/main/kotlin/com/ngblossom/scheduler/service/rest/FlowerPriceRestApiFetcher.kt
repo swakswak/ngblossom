@@ -2,7 +2,7 @@ package com.ngblossom.scheduler.service.rest
 
 import com.ngblossom.common.domain.flowerprice.FlowerPrice
 import com.ngblossom.common.domain.flowerprice.FlowerType
-import com.ngblossom.common.exceptions.DependencyServerErrorException
+import com.ngblossom.common.exceptions.DependencyServerSideException
 import com.ngblossom.common.extensions.toApiDateFormat
 import com.ngblossom.scheduler.service.FlowerPriceApiFetcher
 import kotlinx.coroutines.reactor.awaitSingle
@@ -35,7 +35,7 @@ internal class FlowerPriceRestApiFetcher(
             }
             .exchangeToMono {res ->
                 when (res.statusCode().is5xxServerError) {
-                    true -> Mono.error(DependencyServerErrorException(baseUrl, res.statusCode().value()))
+                    true -> Mono.error(DependencyServerSideException(baseUrl, res.statusCode().value()))
                     false -> res.bodyToMono(FlowerPriceRestResponseBody::class.java)
                 }
             }

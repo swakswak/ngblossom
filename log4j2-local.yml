@@ -1,0 +1,25 @@
+Configuration:
+  appenders:
+    Console:
+      name: Console
+#      JsonLayout:
+#        compact: false
+#        eventEol: true
+#        properties: true
+#        objectMessageAsJsonObject: true
+      PatternLayout:
+       Pattern: "%d{ISO8601}{UTC} %highlight{%-5level }[%style{%-22t}{bright,blue}] %style{%-32C{1.}}{bright,yellow}: %msg%n%throwable"
+  Loggers:
+    Root:
+      level: warn
+      additivity: false
+      includeLocation: true
+      AppenderRef:
+        - ref: Console
+    AsyncLogger:
+      - name: com.ngblossom
+        level: trace
+        includeLocation: true
+        additivity: false
+        AppenderRef:
+          - ref: Console

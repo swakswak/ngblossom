@@ -6,16 +6,14 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.client.WebClient
 import java.time.LocalDate
+import kotlin.test.assertEquals
 
-@SpringBootTest
-class FlowerDataRestClientTest {
+class FlowerPriceRestApiFetcherTest {
     private var port: String = "8888"
 
     private val mockWebServer = MockWebServer()
@@ -87,7 +85,7 @@ class FlowerDataRestClientTest {
         assertEquals("백합", result[0].itemName)
         assertEquals("메두사", result[0].cultivarName)
         assertEquals(1800, result[0].maxAmount)
-        assertEquals(1200, result[1].minAmount)
+        assertEquals(1800, result[0].minAmount)
         assertEquals(1800, result[0].averageAmount)
         assertEquals(88200, result[0].totalAmount)
         assertEquals(49, result[0].totalQuantity)

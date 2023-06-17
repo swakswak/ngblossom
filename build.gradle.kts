@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 val kotlinVersion = "1.8.21"
 val springBootVersion = "3.1.0"
 rootProject.ext.set("kotlinVersion", kotlinVersion)
@@ -18,13 +16,18 @@ allprojects {
     apply(plugin = "jacoco")
 
     jacoco {
-        version = "0.8.10"
         toolVersion = "0.8.10"
     }
 
     group = "com.ngblossom"
     repositories {
         mavenCentral()
+    }
+
+    configurations {
+        all {
+            exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+        }
     }
 }
 
@@ -43,6 +46,10 @@ subprojects {
         implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.2")
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
         implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
+        implementation("org.springframework.boot:spring-boot-starter-log4j2:$springBootVersion")
+        implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.15.2")
+        implementation("com.lmax:disruptor:3.4.4")
+
         testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
         testImplementation(kotlin("test"))
     }
@@ -58,13 +65,14 @@ subprojects {
         useJUnitPlatform()
         finalizedBy("jacocoTestReport")
     }
+
 }
 
-tasks.register<JacocoReport>("jacocoRootReport") {
+tasks.jacocoTestReport {
     dependsOn(subprojects.map { it.tasks.named("test") })
-    sourceDirectories.setFrom(subprojects.map {it.sourceSets["main"].allSource})
-    classDirectories.setFrom(subprojects.map {it.sourceSets["main"].output})
-    executionData.setFrom(fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec"))
+    sourceDirectories.from(subprojects.map { "${it.projectDir}/src/main/kotlin" })
+    classDirectories.from(subprojects.map { it.sourceSets.main.get().output })
+    executionData.from(subprojects.map { "${it.buildDir}/jacoco/test.exec" })
 
     reports {
         html.required.set(true)
@@ -72,5 +80,6 @@ tasks.register<JacocoReport>("jacocoRootReport") {
 }
 
 tasks.test {
-    finalizedBy("jacocoRootReport")
+    finalizedBy("jacocoTestReport")
 }
+
