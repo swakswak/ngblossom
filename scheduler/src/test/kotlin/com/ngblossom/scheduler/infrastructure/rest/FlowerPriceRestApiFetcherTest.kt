@@ -1,7 +1,6 @@
 package com.ngblossom.scheduler.infrastructure.rest
 
 import com.ngblossom.common.domain.flowerprice.FlowerType
-import com.ngblossom.scheduler.service.rest.FlowerPriceRestApiFetcher
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer

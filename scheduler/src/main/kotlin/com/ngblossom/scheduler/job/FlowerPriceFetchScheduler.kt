@@ -1,16 +1,8 @@
 package com.ngblossom.scheduler.job
 
-import com.ngblossom.common.domain.flowerprice.FlowerType
 import com.ngblossom.scheduler.service.FlowerPriceApiFetcher
-import com.ngblossom.scheduler.service.rdb.FlowerPriceRepository
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate
-import org.springframework.data.r2dbc.core.insert
-import org.springframework.r2dbc.core.DatabaseClient
-import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
-import reactor.kotlin.core.publisher.toFlux
-import java.time.LocalDate
 import java.time.ZoneId
 
 @Component

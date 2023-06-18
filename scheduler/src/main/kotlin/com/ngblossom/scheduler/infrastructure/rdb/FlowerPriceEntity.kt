@@ -1,4 +1,4 @@
-package com.ngblossom.scheduler.service.rdb
+package com.ngblossom.scheduler.infrastructure.rdb
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table

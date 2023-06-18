@@ -1,4 +1,4 @@
-package com.ngblossom.scheduler.service.rest
+package com.ngblossom.scheduler.infrastructure.rest
 
 import com.ngblossom.common.domain.flowerprice.FlowerPrice
 import com.ngblossom.common.domain.flowerprice.FlowerType
@@ -33,10 +33,10 @@ internal class FlowerPriceRestApiFetcher(
                     .queryParam("countPerPage", "100000")
                     .build()
             }
-            .exchangeToMono {res ->
-                when (res.statusCode().is5xxServerError) {
-                    true -> Mono.error(DependencyServerSideException(baseUrl, res.statusCode().value()))
-                    false -> res.bodyToMono(FlowerPriceRestResponseBody::class.java)
+            .exchangeToMono {
+                when (it.statusCode().is5xxServerError) {
+                    true -> Mono.error(DependencyServerSideException(baseUrl, it.statusCode().value()))
+                    false -> it.bodyToMono(FlowerPriceRestResponseBody::class.java)
                 }
             }
             .retryWhen(Retry.backoff(3, Duration.ofSeconds(1)))

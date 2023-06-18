@@ -7,6 +7,7 @@ plugins {
     id("org.springframework.boot") version "3.1.0" apply false
     id("io.spring.dependency-management") version "1.1.0" apply false
     id("jacoco")
+    id("com.adarshr.test-logger") version "3.2.0"
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.spring") version "1.8.21" apply false
     kotlin("plugin.jpa") version "1.8.21" apply false
@@ -14,6 +15,7 @@ plugins {
 
 allprojects {
     apply(plugin = "jacoco")
+    apply(plugin = "com.adarshr.test-logger")
 
     jacoco {
         toolVersion = "0.8.10"
@@ -28,6 +30,26 @@ allprojects {
         all {
             exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
         }
+    }
+
+    testlogger {
+        setTheme("standard")
+        showExceptions = true
+        showStackTraces = true
+        showFullStackTraces = false
+        showCauses = true
+        slowThreshold = 2000
+        showSummary = true
+        showSimpleNames = true
+        showPassed = true
+        showSkipped = true
+        showFailed = true
+        showOnlySlow = false
+        showStandardStreams = false
+        showPassedStandardStreams = true
+        showSkippedStandardStreams = true
+        showFailedStandardStreams = true
+        setLogLevel("lifecycle")
     }
 }
 
@@ -61,6 +83,13 @@ subprojects {
         }
     }
 
+    tasks.compileTestKotlin {
+        kotlinOptions {
+            freeCompilerArgs = listOf("-Xjsr305=strict")
+            jvmTarget = "17"
+        }
+    }
+
     tasks.test {
         useJUnitPlatform()
         finalizedBy("jacocoTestReport")
@@ -76,10 +105,10 @@ tasks.jacocoTestReport {
 
     reports {
         html.required.set(true)
+
     }
 }
 
 tasks.test {
     finalizedBy("jacocoTestReport")
 }
-

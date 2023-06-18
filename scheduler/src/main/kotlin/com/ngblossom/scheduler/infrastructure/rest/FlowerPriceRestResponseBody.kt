@@ -1,4 +1,4 @@
-package com.ngblossom.scheduler.service.rest
+package com.ngblossom.scheduler.infrastructure.rest
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.ngblossom.common.domain.flowerprice.FlowerPrice

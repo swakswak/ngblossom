@@ -1,12 +1,9 @@
 val springBootVersion = rootProject.ext.get("springBootVersion")
 
-plugins {
-    id("java")
-}
-
 repositories {
     mavenCentral()
 }
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux:$springBootVersion")
     {
