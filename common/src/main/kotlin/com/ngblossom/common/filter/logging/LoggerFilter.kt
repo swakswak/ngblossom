@@ -3,11 +3,13 @@ package com.ngblossom.common.filter.logging
 import com.ngblossom.common.extensions.info
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.springframework.stereotype.Component
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
 import reactor.core.publisher.Mono
 
+@Component
 class LoggerFilter(
     private val log: Logger = LogManager.getLogger(LoggerFilter::class.java)
 ) : WebFilter {

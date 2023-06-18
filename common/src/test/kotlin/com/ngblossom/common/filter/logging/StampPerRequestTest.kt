@@ -22,6 +22,7 @@ class StampPerRequestTest {
                     add("hkey1", "value1")
                     add("hkey2", "value2")
                     add("hkey3", "value3")
+                    add("Authorization", "Bearer test-token")
                 })
             ),
             ResponseStamp(
@@ -49,10 +50,11 @@ class StampPerRequestTest {
                 add("hkey1", "value1")
                 add("hkey2", "value2")
                 add("hkey3", "value3")
+                add("Authorization", "[masked]")
             }),
             stampPerRequest.request.headers
         )
-        assertEquals(HttpStatusCode.valueOf(200), stampPerRequest.response.response)
+        assertEquals(HttpStatusCode.valueOf(200), stampPerRequest.response.statusCode)
         assertEquals(
             HttpHeaders.writableHttpHeaders(HttpHeaders().apply {
                 add("hkey1", "value1")
